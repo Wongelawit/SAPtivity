@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>A JavaScript Game</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style src="/material.css"></style>
+    <style>
+        @keyframes flash {
+            from {
+                opacity: 0;
+                width: 30px;
+                height: 30px;
+                border: solid 10px red;
+            }
+
+            to {
+                opacity: 1;
+                width: 50px;
+                height: 50px;
+                border: solid 5px green;
+            }
+        }
+
+        #whole {
+            height: 700px;
+            background-image: url("floor.png");
+            background-repeat: no-repeat;
+            overflow: hidden;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        #Anemone,
+        #Desk,
+        #Kitchen,
+        #Lounge,
+        #Dshop,
+        #Fireplace {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: solid 10px red;
+            animation: flash 0.5s infinite;
+            visibility: hidden;
+        }
+
+        #Anemone {
+            top: 586px;
+            left: 508px;
+        }
+
+        #Desk {
+            top: 592px;
+            left: 279px;
+        }
+
+        #Kitchen {
+            top: 345px;
+            left: 119px;
+        }
+
+        #Lounge {
+            top: 197px;
+            left: 469px;
+        }
+
+        #Dshop {
+            top: 197px;
+            left: 647px;
+        }
+
+        #Fireplace {
+            top: 197px;
+            left: 963px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="whole" class="mdl-grid">
+        <div id="Anemone"></div>
+        <div id="Desk"></div>
+        <div id="Kitchen"></div>
+        <div id="Lounge"></div>
+        <div id="Dshop"></div>
+        <div id="Fireplace"></div>
+    </div>
+
+    <script type="text/javascript">
+        setInterval(function () {
+            $.ajax({
+                url: "http://10.161.106.9:5000/map-now",
+                dataType: 'json',
+                success: function (data) {
+                    data = JSON.parse(data)
+                    let new_id = data['newid'];
+                    let old_id = data['oldid'];
+                    if(new_id !== old_id) {
+                        $("[id='" + new_id + "']").css('visibility', 'visible');
+                        $("[id='" + old_id + "']").css('visibility', 'hidden');
+                    }
+                },
+                error: function (err) { 
+                    console.log(err)
+                }
+            });
+        }, 10000);
+    </script>
+
+</body>
+
+</html>
